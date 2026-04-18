@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "env": {
+    "VELA_ADMIN_TOKEN": "@vela_admin_token",
+    "NEXT_PUBLIC_VELA_BASE": "@next_public_vela_base"
+  },
+  "rewrites": [
+    {
+      "source": "/api/backend/:path*",
+      "destination": "https://hue-backend.fly.dev/:path*"
+    }
+  ]
+}

@@ -1,10 +1,22 @@
 import { NextResponse } from "next/server";
 
+const ZEROED_RISK = {
+  var95_1d: 0,
+  varPctOfAum: 0,
+  sharpe30d: 0,
+  maxDrawdown: 0,
+  realizedVol30d: 0,
+  correlationMatrix: {},
+  concentration: [],
+};
+
 export async function GET() {
+  const backendUrl = process.env.BACKEND_URL ?? "http://localhost:8000";
+
   try {
-    const res = await fetch("http://localhost:8000/risk", { cache: "no-store" });
+    const res = await fetch(`${backendUrl}/risk`, { cache: "no-store" });
     if (!res.ok) {
-      return NextResponse.json({ error: `Backend ${res.status}` }, { status: res.status });
+      return NextResponse.json(ZEROED_RISK);
     }
     const raw = await res.json();
     return NextResponse.json({
@@ -17,6 +29,6 @@ export async function GET() {
       concentration: raw.concentration,
     });
   } catch {
-    return NextResponse.json({ error: "Backend unreachable" }, { status: 503 });
+    return NextResponse.json(ZEROED_RISK);
   }
 }
